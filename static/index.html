@@ -41,7 +41,7 @@ function sendJSONXMLHTTPRequest(url, objects, callback) {
                     //XXX: parse some JSON from the request!
                     //XXX: Pass the data to the callback!
                     var obj = JSON.parse(this.responseText);
-                    console.log(obj);
+                    // console.log(obj);
                     callback(obj);
                     
                 }
@@ -75,17 +75,23 @@ function drawCircle(context,entity) {
         lineWidth = 3; //thickness of the line
         var x = entity["x"];
         var y = entity["y"];
+
         //moveTo(x,y);
         fillStyle = entity["colour"];
         strokeStyle = fillStyle;
-        // moveTo(x, y);
-        // bezierCurveTo(x, y, 70, 25, 50, 25);
-        // bezierCurveTo(20, 25, 20, 62.5, 20, 62.5);
-        // bezierCurveTo(20, 80, 40, 102, 75, 120);
-        // bezierCurveTo(110, 102, 130, 80, 130, 62.5);
-        // bezierCurveTo(130, 62.5, 130, 25, 100, 25);
-        // bezierCurveTo(85, 25, 75, 37, 75, 40);
-        arc(x, y, (entity["radius"])?entity["radius"]:50, 0, 2.0 * Math.PI, false);  
+        // star shape
+        moveTo(x, y); //108,0
+        lineTo(x+33, y+70);
+        lineTo(x+110, y+78.3);
+        lineTo(x+54, y+131);
+        lineTo(x+67, y+205);
+        lineTo(x, y+170);
+        lineTo(x-66.8, y+205);
+        lineTo(x-53, y+131);
+        lineTo(x-107, y+78);
+        lineTo(x-33, y+68);
+        lineTo(x, y);
+         
         stroke();                                
     }
 }
@@ -264,25 +270,33 @@ mouse = (function() {
     return self;
 })();
 
+
 // Add the application specific mouse listeners!
 //XXX: TODO Make these prettier!
 mouse.mousedowners.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'yellow', 'radius':30});
+    addEntityWithoutName({'x':x,'y':y,'colour':'#fff72b'}); 
 });
 
 mouse.mouseuppers.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'lightblue',
-                            'radius':40});
+    addEntityWithoutName({'x':x,'y':y,'colour':'#fff72b'});
 });
 
 mouse.mousedraggers.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'pink',
-                          'radius':20});
+    var pos1 = Math.floor((Math.random() * 9) + 0);
+    var pos2 = Math.floor((Math.random() * 9) + 0);
+    var pos3 = Math.floor((Math.random() * 9) + 0);
+    var pos4 = Math.floor((Math.random() * 9) + 0);
+    let redTone = "#ff"+pos1+pos2+pos3+pos4;
+    addEntityWithoutName({'x':x,'y':y,'colour':redTone}); //yellow
 });
 
 
 function update() {
     //XXX: TODO Get the world from the webservice using a XMLHTTPRequest
+    sendJSONXMLHTTPRequest("/world", null, function(data){
+        world = data;
+        drawNextFrame();
+    });
     drawFrame();
 }
 
