@@ -6,7 +6,7 @@
     <meta content='width=device-width; height=device-height; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;' name='viewport' />
     <meta name="viewport" content="width=device-width" />
     <meta name="license" content="
-        Copyright 2013 Abram Hindle
+        Copyright 2013 Abram Hindle, Carrol Jirakul
         
         Licensed under the Apache License, Version 2.0 (the "License");
         you may not use this file except in compliance with the License.
@@ -40,6 +40,10 @@ function sendJSONXMLHTTPRequest(url, objects, callback) {
                 if (xhr.status==200) {
                     //XXX: parse some JSON from the request!
                     //XXX: Pass the data to the callback!
+                    var obj = JSON.parse(this.responseText);
+                    console.log(obj);
+                    callback(obj);
+                    
                 }
             } 
             catch(e) {
@@ -50,6 +54,15 @@ function sendJSONXMLHTTPRequest(url, objects, callback) {
     //XXX: POST to a URL
     //XXX: set the mimetype and the accept headers!
     // Remember to use application/json !
+    if(objects) {
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-type", "application/json");
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.send(JSON.stringify(objects));
+    } else {
+        xhr.open("GET", url, true);
+        xhr.send();
+    }
 }
 
 
@@ -59,12 +72,19 @@ world = {};
 function drawCircle(context,entity) {
     with(context) {
         beginPath();              
-        lineWidth = 3;
+        lineWidth = 3; //thickness of the line
         var x = entity["x"];
         var y = entity["y"];
         //moveTo(x,y);
         fillStyle = entity["colour"];
         strokeStyle = fillStyle;
+        // moveTo(x, y);
+        // bezierCurveTo(x, y, 70, 25, 50, 25);
+        // bezierCurveTo(20, 25, 20, 62.5, 20, 62.5);
+        // bezierCurveTo(20, 80, 40, 102, 75, 120);
+        // bezierCurveTo(110, 102, 130, 80, 130, 62.5);
+        // bezierCurveTo(130, 62.5, 130, 25, 100, 25);
+        // bezierCurveTo(85, 25, 75, 37, 75, 40);
         arc(x, y, (entity["radius"])?entity["radius"]:50, 0, 2.0 * Math.PI, false);  
         stroke();                                
     }
@@ -247,16 +267,17 @@ mouse = (function() {
 // Add the application specific mouse listeners!
 //XXX: TODO Make these prettier!
 mouse.mousedowners.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'blue'});
+    addEntityWithoutName({'x':x,'y':y,'colour':'yellow', 'radius':30});
 });
 
 mouse.mouseuppers.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'red'});
+    addEntityWithoutName({'x':x,'y':y,'colour':'lightblue',
+                            'radius':40});
 });
 
 mouse.mousedraggers.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'green',
-                          'radius':10});
+    addEntityWithoutName({'x':x,'y':y,'colour':'pink',
+                          'radius':20});
 });
 
 
