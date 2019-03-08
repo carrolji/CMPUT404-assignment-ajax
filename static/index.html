@@ -274,11 +274,11 @@ mouse = (function() {
 // Add the application specific mouse listeners!
 //XXX: TODO Make these prettier!
 mouse.mousedowners.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'#fff72b'}); 
+    addEntityWithoutName({'x':x,'y':y,'colour':'#fff72b'});//yellow
 });
 
 mouse.mouseuppers.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour':'#fff72b'});
+    addEntityWithoutName({'x':x,'y':y,'colour':'#fff72b'});//yellow
 });
 
 mouse.mousedraggers.push(function(x,y,clicked,e) {
@@ -287,7 +287,7 @@ mouse.mousedraggers.push(function(x,y,clicked,e) {
     var pos3 = Math.floor((Math.random() * 9) + 0);
     var pos4 = Math.floor((Math.random() * 9) + 0);
     let redTone = "#ff"+pos1+pos2+pos3+pos4;
-    addEntityWithoutName({'x':x,'y':y,'colour':redTone}); //yellow
+    addEntityWithoutName({'x':x,'y':y,'colour':redTone}); 
 });
 
 
